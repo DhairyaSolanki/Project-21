@@ -1,43 +1,82 @@
-var bullet, wall, thickness;
-var speed, weight;
+var helicopterIMG, helicopterSprite, packageSprite,packageIMG;
+var packageBody,ground;
+var Crate;
+var Box1, box2, box3;
+const Engine = Matter.Engine;
+const World = Matter.World;
+const Bodies = Matter.Bodies;
+const Body = Matter.Body;
 
-
+function preload()
+{
+	helicopterIMG=loadImage("helicopter.png")
+	packageIMG=loadImage("package.png")
+}
 
 function setup() {
-  createCanvas(1500,400);
+	createCanvas(800, 700);
+	rectMode(CENTER);
 
-  speed=random (223, 321);
-  weight=random (30, 52);
-  thickness=random (22, 83);
-  wall= createSprite(1200, 200, thickness, height/2);
-  wall.shapeColour = (80,80,80);  
+	packageSprite=createSprite(width/2, 80, 10,10);
+	packageSprite.addImage(packageIMG)
+	packageSprite.scale=0.2
+	
+	helicopterSprite=createSprite(width/2, 200, 10,10);
+	helicopterSprite.addImage(helicopterIMG)
+	helicopterSprite.scale=0.6
 
-  bullet = createSprite(50, 200, 50, 50);
-  bullet.velocityX = speed;
-  bullet.shapeColour = "white";
+	groundSprite=createSprite(width/2, height-35, width,10);
+	groundSprite.shapeColor=color(255)
+
+	Box1 = createSprite (400, 650, 200, 20);
+	Box1.shapeColor=color("red");
+	
+
+	Box2 = createSprite (509, 610, 20, 100);
+	Box2.shapeColor=color("red");
+
+	Box3 = createSprite (290, 610, 20, 100);
+	Box3.shapeColor=color("red");
+
+	Crate = createSprite();
+
+
+	engine = Engine.create();
+	world = engine.world;
+
+	packageBody = Bodies.circle(width/2 , 200 , 0.1 , {restitution:0.8, isStatic:true});
+	World.add(world, packageBody);
+	
+
+	//Create a Ground
+	ground = Bodies.rectangle(width/2, 650, width, 10 , {isStatic:true} );
+ 	World.add(world, ground);
+
+	Box1 = Bodies.rectangle(width/2, 610, width, 10 , {isStatic:true} );
+ 	World.add(world, Box1);
+
+	Engine.run(engine);
+  
 }
- 
+
+
 function draw() {
-  background("black");
-
-  if (wall.x - bullet.x < (bullet.width + wall.width)/2){
-    bullet.velocityX = 0;
-    var deformation = 0.5 * weight * speed * speed/22509;
-    if (deformation>180){
-      bullet.shapeColour = colour (255, 0, 0);
-    }
-if (deformation <180 && deformation >100){
-  bullet.shapeColour = colour (230, 230, 0);
-}
-if (deformation <100){
-  bullet.shapeColour = colour (0,255,0);
-}
-  }
-
-  function hasCollided(){
-
-    s
-  }
-
+  rectMode(CENTER);
+  background(0);
+  packageSprite.x= packageBody.position.x 
+  packageSprite.y= packageBody.position.y 
   drawSprites();
 }
+Body
+function keyPressed() {
+ if (keyCode === DOWN_ARROW) {
+    // Look at the hints in the document and understand how to make the package body fall only on
+    Matter.Body.setStatic(packageBody, false);
+	restitution = 0.5;
+
+	Box1.colided (packageBody);
+  }
+}
+
+
+
